@@ -36,10 +36,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@main
         
-      - name: Cleaning The Actions Workspace
-      # Cleanup The Actions Workspace Using Custom Composite Run Actions
-        uses: rokibhasansagar/slimhub_actions@main
-      
       - name: Creating User & Host
         run: |
              # Creation of user
@@ -89,6 +85,10 @@ jobs:
              send "${{ github.event.inputs.pincode }}\r"
              expect eof
              '
+             
+      - name: Cleaning The Actions Workspace
+      # Cleanup The Actions Workspace Using Custom Composite Run Actions
+        uses: rokibhasansagar/slimhub_actions@main
          
       - name: Keeping alive
         uses: GuillaumeFalourd/wait-sleep-action@v1
