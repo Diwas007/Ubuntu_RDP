@@ -1,0 +1,96 @@
+name: Ubuntu_RDP
+
+on: 
+  workflow_dispatch:
+    inputs:
+      machinename:
+        description: 'Enter Machinename'
+        default: 'ubuntu'
+        required: true
+      username:
+        description: 'Enter Username'
+        default: 'user'
+        required: true
+      password:
+        description: 'Enter Password'
+        default: 'root'
+        required: true
+      authcode: 
+        description: 'CRP'
+        required: true
+      pincode:
+        description: 'Pin'
+        default: '123456'
+        required: true
+        
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        
+      - name: Checking Your Repository
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        uses: actions/checkout@main
+        
+      - name: Cleaning The Actions Workspace
+      # Cleanup The Actions Workspace Using Custom Composite Run Actions
+        uses: rokibhasansagar/slimhub_actions@main
+      
+      - name: Creating User & Host
+        run: |
+             # Creation of user
+             sudo useradd -m ${{ github.event.inputs.username }}
+             # Add user to sudo group
+             sudo adduser ${{ github.event.inputs.username }} sudo
+             # Set password of user to 'root'
+             echo ${{ github.event.inputs.username }}:${{ github.event.inputs.password }} | sudo chpasswd
+             # Change default shell from sh to bash
+             sudo sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd
+             # Creation of host
+             sudo hostname ${{ github.event.inputs.machinename }}
+             
+      - name: Installing Chrome Remote Desktop
+        run: |
+             sudo apt update
+             # Installs required packages
+             sudo apt install nano expect nautilus 
+             sudo apt install xbase-clients python3-psutil xvfb
+             # Download & install chrome remote desktop
+             wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
+             sudo dpkg --install chrome-remote-desktop_current_amd64.deb
+             sudo apt install --assume-yes --fix-broken
+             
+      - name: Installing Desktop Environment
+        run: |
+             sudo apt update && sudo apt install ubuntu-desktop
+             sudo apt install --assume-yes xscreensaver
+             
+      - name: Installing Google Chrome
+        run: |
+             sudo apt update
+             wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+             sudo dpkg --install google-chrome-stable_current_amd64.deb
+             sudo apt install --assume-yes --fix-broken
+             
+      - name: Finalising & Starting Chrome Remote Desktop
+        run: |
+             touch startcrd.sh
+             echo "${{ github.event.inputs.authcode }}" >> "startcrd.sh"
+             chmod 777 startcrd.sh
+             expect -c '
+             spawn ./startcrd.sh
+             expect "Enter a PIN of at least six digits: "
+             send "${{ github.event.inputs.pincode }}\r"
+             expect "Enter the same PIN again: "
+             send "${{ github.event.inputs.pincode }}\r"
+             expect eof
+             '
+         
+      - name: Keeping alive
+        uses: GuillaumeFalourd/wait-sleep-action@v1
+        with:
+          time: '6h'
