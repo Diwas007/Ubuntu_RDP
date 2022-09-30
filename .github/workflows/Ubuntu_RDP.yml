@@ -90,7 +90,6 @@ jobs:
       # Cleanup The Actions Workspace Using Custom Composite Run Actions
         uses: rokibhasansagar/slimhub_actions@main
          
-      - name: Keeping alive
-        uses: GuillaumeFalourd/wait-sleep-action@v1
-        with:
-          time: '6h'
+      - name: Keeping Alive
+        run: sleep 360m
+        shell: bash
