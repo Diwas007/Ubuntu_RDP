@@ -1,21 +1,21 @@
 # About
-This is a github workflow where you can get a free ubuntu virtual machine from github & you can connect through chrome remote desktop.
+This is a github workflow where you can get a free ubuntu virtual machine provided by github's `Actions` & you can connect through chrome remote desktop.
 
 **Features of this workflow :**
-1. Easy to use & we can use our desired `Username` `Machinename` & `Password`.
-2. We can connect through `chrome remote desktop`.
-3. You can get upto `50gb` of free space or may be more.
-4. It is available for about `6 hours`.
+- You can use your desired `Username`,`Machinename` & `Password`.
+- You can connect through `chrome remote desktop`.
+- You can get upto `50gb` of free space or may be more.
+- You can use your virtual machine for about `6 hours`.
 
 # Important :
 
-`Hey! Don't Forget To Follow Me If You Appreciate My Work & Give This Repository A Star. 😀😁😂`
+**`Hey! Don't Forget To Follow Me If You Appreciate My Work & Give This Repository A Star. 😀😁😂`**
 
 # How to use this workflow ?
 
-You should know these terms :
+**Parameter Description :**
 
-Inputs Name | Uses | Notes
+Input's Name | Uses | Notes
 ----- | ----- | -----
 `Machinename` | For changing `Machine` name | Type any name you want default is `ubuntu`
 `Username` | For creating `Username` | Type any name you want default is `user`
